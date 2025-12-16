@@ -1,10 +1,5 @@
-<%@page import="day1216.ApiExplorer"%>
-<%@page import="java.util.ArrayList"%>
-<%@page import="day1216.RssDTO"%>
-<%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ include file="../fragments/siteProperty.jsp" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>    
 
 <!DOCTYPE html>
@@ -122,55 +117,6 @@
 $(function(){
 	
 });
-function requestRss(url,title){
-	if(confirm(title+"의 기사를 보시겠습니까?")){
-		$.ajax({
-			url:url+".xml",
-			type:"get",
-			dataType:"xml",
-			error:function(xhr){
-				alert(title+"기사를 가져올수 없습니다");
-				console.log(xhr.status);
-			},
-			success: function(xmlDoc){
-				var output="";
-				
-				output+="<h2>"+ title+"</h2>";
-				
-				var itemNodes=$(xmlDoc).find("item");
-				output+="조회 기사 : <strong>"+ itemNodes.length +"</storng>건";
-				var description="";
-				var itemTitle="";
-				$.each(itemNodes,function(ind,itemNode){
-					
-					itemTitle=$(itemNode).find("title").text();
-					if(itemTitle.length > 40){
-						itemTitle=itemTitle.substring(0,39)+" ... ";
-					}
-					description=$( itemNode ).find("description").text();
-					if(description.length > 100){
-					description=description.substring(0,99)+" ... ";
-					}//end if
-					output+="<div>";
-					output+="<table class='table table-hover'>";
-					output+="<tr><th>제목<th><th><a href='"+
-							$(itemNode).find("link").text()
-							+"' title='뉴스 읽기' target='blank'>"+
-					itemTitle+"</th><th>작성일</th><th>"+
-					$(itemNode).find("pubDate").text()+"</td></tr><tr><th>설명</th><td colspan='4'>"+
-					description+"</td></tr>";
-					output+="</table>";
-					output+="</div>";
-					
-				});
-				
-				
-				$("#output").html(output);
-			}
-		});
-		
-	}
-}
 </script>
 </head>
 <body>
@@ -178,41 +124,13 @@ function requestRss(url,title){
       <jsp:include page="../fragments/header.jsp" /> 
    </header>
    <main>
-      <jsp:include page="../fragments/carousel.jsp" /> 
       
       <div class="container marketing">
          <hr class="featurette-divider">
          <div class="row featurette">
             <div class="col-md-7">
-               <%
-               List<RssDTO> list=new ArrayList<RssDTO>();	
-               list.add(new RssDTO("newsflesh","속보","newsflesh"));
-               list.add(new RssDTO("issue","정치","issue"));
-               list.add(new RssDTO("section/politics","사회","politics"));
-               list.add(new RssDTO("section/economy","경제","economy"));
-               list.add(new RssDTO("section/society","사회","society"));
-               list.add(new RssDTO("section/international","국제","international"));
-               list.add(new RssDTO("section/culture","문화","culture"));
-               list.add(new RssDTO("section/entertainment","연예","entertainment"));
-               list.add(new RssDTO("section/sports","스포츠","sports"));
-               list.add(new RssDTO("section/weather","날씨","weather"));
-               
-               ApiExplorer ae=new ApiExplorer();
-               //cors이슈로인하여 rss를ㄹ 자바에서 읽어들여  xml 파일로생성
-               for(RssDTO rDTO : list){
-            	   ae.createRss(rDTO.getUrl(),rDTO.getEngTitle());
-               }
-               pageContext.setAttribute("rssList", list);
-               %>
-               <table class="table table-hover">
-               <tr>
-               <c:forEach var="news" items="${rssList }">
-            <td><a href="javascript:requestRss('${CommonURL}/day1216/${ news.engTitle }','${ news.title }')"><c:out value="${ news.title }"/></a>
-               </c:forEach>
-               </tr>
-               </table>
+               코딩영역
             </div>
-             <div id="output"></div>
          </div>
          <hr class="featurette-divider">
       </div>
