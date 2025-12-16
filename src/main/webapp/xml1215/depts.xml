@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+	<name lastname="민" nick="멋진">병조</name>
+	<!-- <name lastname="민"nick="멋진">병조</name> 속성은 반드시 공백을 가져야한다-->
+	<addr>의정부</addr>
+	<!-- <addr>의정부</Addr>  1. 대소문자를가린다-->
+	<age>25</age>
+</root>
+<!-- <root> 부모노드는 반드시 하나만 존재해야한다-->

