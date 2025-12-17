@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>    
-<%@page import="siteProperty.SiteProperty"%>
+
 <!DOCTYPE html>
 <html lang="en" data-bs-theme="auto">
 <head>
@@ -121,36 +121,22 @@ $(function(){
 </head>
 <body>
    <header data-bs-theme="dark">
-      <jsp:include page="fragments/header.jsp" /> 
+      <jsp:include page="../fragments/header.jsp" /> 
    </header>
    <main>
-      <jsp:include page="fragments/carousel.jsp" /> 
       
       <div class="container marketing">
          <hr class="featurette-divider">
          <div class="row featurette">
             <div class="col-md-7">
-               사용자 메인페이지<br>
-               사용자에게 제공할 contents들 
-               <c:choose>
-               <c:when test="${not empty sessionScope.userId }">
-				<img src="${pageContext.request.contextPath}/upload/${sessionScope.userProfile}" id="preview" style="width:100px;height:100px; border-radius: 50px"/>               <c:out value="${userId }"/>(<a href="${CommonURL }/mypage/mypage.jsp"><c:out value="${userName }"/></a>);
-               님 로그인 하셨습니다 
-               </c:when>
-               <c:otherwise>
-               <a href="login/loginFrm.jsp">로그인</a>               
-               <a href="${CommonURL }/login/logout.jsp">로그아웃</a>
-               <a href="${CommonURL }/map/mapList.jsp">등록한 장소</a>
-               </c:otherwise>
-               </c:choose>
-               <a href="${CommonURL }/board/board_list.jsp">게시판</a>               
+               코딩영역
             </div>
          </div>
          <hr class="featurette-divider">
       </div>
       
       <footer class="container">
-       <jsp:include page="fragments/footer.jsp" />
+       <jsp:include page="../fragments/footer.jsp" />
       </footer>
    </main>
    
