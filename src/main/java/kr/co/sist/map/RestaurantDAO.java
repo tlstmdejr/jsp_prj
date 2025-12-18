@@ -11,66 +11,100 @@ import kr.co.sist.board.BoardDTO;
 import kr.co.sist.dao.DbConn;
 
 public class RestaurantDAO {
-	
-	private static RestaurantDAO rDAO;
-	
-	private RestaurantDAO() {
-		
-	}
-	public static RestaurantDAO getInstance() {
-		if( rDAO==null) {
-			rDAO=new RestaurantDAO();
-			
-		}//end if
-		return rDAO;
-	}//getinstance
-	
-	public List<RastaurantDTO> selectAllRestaurant(String id)throws SQLException{
-		List<RastaurantDTO> list=new ArrayList<RastaurantDTO>();
-		
-		DbConn dbCon = DbConn.getInstance("jdbc/dbcp");
 
-		Connection con = null;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		try {
-			// 1. JNDI사용객체 생성
-			// 2. DataSource 얻기
-			// 3. Connection 얻기
-			con = dbCon.getConn();
-			// 4. 쿼리문생성객체 얻기
-			StringBuilder selectRestaurant = new StringBuilder();
-			selectRestaurant.append("	select rest_num,rest_name,munu,lat,lng,input_date   ")
-						.append("   from restaurant ")
-						.append("   where id=?  ");
-			
-		
-			pstmt = con.prepareStatement(selectRestaurant.toString());
-			// 5. 바인드변수 값 설정
-			
-			pstmt.setString(1,id);
-			// 6. 조회결과 얻기
-			RastaurantDTO rDTO = null;
-			rs = pstmt.executeQuery();
-
-			while (rs.next()) {
-				rDTO=new RastaurantDTO();
-				rDTO.setRest_num(rs.getInt("rest_num"));
-				
-			}
-			// empno, ename, job, sal, hiredate
-		} finally {
-			// 7. 연결 귾기
-			dbCon.dbClose(rs, pstmt, con);
-		}
-		
-		
-		
-		
-		return list;
-	}
-	public void insertRestaurant(RastaurantDTO rDTO)throws SQLException{
-		
-	}
-}
-//class
+   private static RestaurantDAO rDAO;
+   private RestaurantDAO() {
+   }
+   
+   public static RestaurantDAO getInstance() {
+      if( rDAO == null ) {
+         rDAO=new RestaurantDAO();
+      }//end if
+      return rDAO;
+   }//getInstance
+   
+   public List<RastaurantDTO> selectAllRestaurant(String id)throws SQLException{
+      List<RastaurantDTO> list=new ArrayList<RastaurantDTO>();
+      
+      //1.
+      DbConn dbCon=DbConn.getInstance("jdbc/dbcp");
+      
+      Connection con=null;
+      PreparedStatement pstmt=null;
+      ResultSet rs=null;
+      
+      try {
+      //1. JNDI사용객체 생성
+      //2. DataSource 얻기
+      //3. Connection 얻기
+         con=dbCon.getConn();
+      //4. 쿼리문생성객체 얻기
+         StringBuilder selectRestaurant=new StringBuilder();
+         selectRestaurant
+         .append("   select  rest_num, rest_name, menu, lat, lng, input_date             ")
+         .append("   from   restaurant   ")
+         .append("   where id=?      ");
+         //dynamic query
+         pstmt=con.prepareStatement(selectRestaurant.toString());
+      //5. 바인드변수 값 설정
+         pstmt.setString(1, id);
+         
+      //6. 조회결과 얻기
+         RastaurantDTO rDTO=null;
+         
+         rs=pstmt.executeQuery();
+         
+         while(rs.next()) {
+            rDTO=new RastaurantDTO();
+            rDTO.setRest_num(rs.getInt("rest_num"));
+            rDTO.setRest_name(rs.getString("rest_name"));
+            rDTO.setMenu(rs.getString("menu"));
+            rDTO.setLat(rs.getDouble("lat"));
+            rDTO.setLng(rs.getDouble("lng"));
+            rDTO.setInput_date(rs.getDate("input_date"));
+            
+            list.add(rDTO);
+         }//end while
+         
+      }finally {
+      //7. 연결 끊기
+         dbCon.dbClose(rs, pstmt, con);
+      }//end finally
+      
+      
+      return list;
+   }//selectAllRestaurant
+   
+   public void insertRestaurant( RastaurantDTO rDTO )throws SQLException{
+      DbConn dbCon=DbConn.getInstance("jdbc/dbcp");
+      
+      Connection con = null;
+      PreparedStatement pstmt = null;
+      
+      try {
+      //1.JNDI사용객체 생성
+      //2.DataSource 얻기
+      //3.DataSource에서 Connection 얻기
+         con=dbCon.getConn();
+      //4.쿼리문 생성객체 얻기
+         String insertRestaurant
+= "insert into restaurant(rest_num,id,rest_name,menu,info,lat,lng) values(seq_board.nextval,?,?,?,?,?,?)";
+         pstmt=con.prepareStatement(insertRestaurant);
+         
+      //5.바인드변수 값 설정
+         pstmt.setString(1, rDTO.getId());
+         pstmt.setString(2, rDTO.getRest_name());
+         pstmt.setString(3, rDTO.getMenu());
+         pstmt.setString(4, rDTO.getInfo());
+         pstmt.setDouble(5, rDTO.getLat());
+         pstmt.setDouble(6, rDTO.getLng());
+      //6.쿼리문 수행 후 결과 얻기
+         pstmt.executeUpdate();
+         //end if
+      } finally {
+         //7.연결끊기
+         dbCon.dbClose(null, pstmt, con);
+      }//end finally
+   }//insertRestaurant
+   
+}//class
